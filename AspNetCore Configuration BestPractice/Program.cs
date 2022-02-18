@@ -1,3 +1,6 @@
+using AspNetCore_Configuration_BestPractice.Database;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Extera App Configuration
@@ -5,6 +8,14 @@ builder.Host.ConfigureAppConfiguration(AddConfiguration);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    // connectionstring is obtained from usersecret in development and envrionment variables in production
+    // so after deploy on server you will give usersecret to devops engineer to set in environment variables
+    // so no body can see sensitive data in git repository like github
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
 
 var app = builder.Build();
 
@@ -44,4 +55,6 @@ static void AddConfiguration(HostBuilderContext host, IConfigurationBuilder conf
     //add UserSecret Just in Development
     if (host.HostingEnvironment.IsDevelopment())
         config.AddUserSecrets<Program>();
+
+    //other json file are added based on evironement by default
 }
