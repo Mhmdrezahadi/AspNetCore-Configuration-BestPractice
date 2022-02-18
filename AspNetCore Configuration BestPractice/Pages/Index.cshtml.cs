@@ -16,5 +16,9 @@ namespace AspNetCore_Configuration_BestPractice.Pages
         {
 
         }
+        public void OnPost()
+        {
+
+        }
     }
 }

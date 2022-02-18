@@ -8,3 +8,15 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@*use environment tag helper to determine which envrionemnt application currently on*@
+
+<environment names="Development">
+    Development mode
+</environment>
+<environment names="Production">
+    Production mode
+</environment>
+<environment names="Staging">
+    Staging mode
+</environment>
