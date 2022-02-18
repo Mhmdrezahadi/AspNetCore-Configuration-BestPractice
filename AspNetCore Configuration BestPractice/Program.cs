@@ -1,4 +1,5 @@
 using AspNetCore_Configuration_BestPractice.Database;
+using AspNetCore_Configuration_BestPractice.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     // so no body can see sensitive data in git repository like github
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
+
+// using strongly typed configuration: map json setting to c# objects (POCO objects)
+// to use MapSettings as a service should inject IOptions<MapSettings> or IOptionsSnapshot<MapSettings> to your class
+// IOtions<T> & IOptionsSnapshot<T> registered in DI Container as singleton and exposes a value property
+// to access genereic T properties
+builder.Services.Configure<MapSettings>(builder.Configuration.GetSection(nameof(MapSettings)));
 
 var app = builder.Build();
 

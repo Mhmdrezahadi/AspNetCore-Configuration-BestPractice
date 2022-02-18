@@ -1,22 +1,36 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+	ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<h1 class="display-4">Welcome</h1>
+	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
 @*use environment tag helper to determine which envrionemnt application currently on*@
 
+<h3>
+	<h2>Map Settings</h2>
+	<p>
+		Zoom Level is <span>@Model._mapSettings.DefaultZoomLevel</span>
+	</p>
+	<p>
+		latitude is <span>@Model._mapSettings.DefaultLocation.latitude</span>
+	</p>
+	<p>
+		longitude is <span>@Model._mapSettings.DefaultLocation.longitude</span>
+	</p>
+</h3>
+
+
 <environment names="Development">
-    Development mode
+	Development mode
 </environment>
 <environment names="Production">
-    Production mode
+	Production mode
 </environment>
 <environment names="Staging">
-    Staging mode
+	Staging mode
 </environment>
