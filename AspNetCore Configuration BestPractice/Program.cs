@@ -1,6 +1,7 @@
 using AspNetCore_Configuration_BestPractice.Database;
 using AspNetCore_Configuration_BestPractice.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.Configure<MapSettings>(builder.Configuration.GetSection(nameof(
 
 var app = builder.Build();
 
+SeedUsers(app);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -44,6 +47,8 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+
 
 static void AddConfiguration(HostBuilderContext host, IConfigurationBuilder config)
 {
@@ -64,4 +69,30 @@ static void AddConfiguration(HostBuilderContext host, IConfigurationBuilder conf
         config.AddUserSecrets<Program>();
 
     //other json file are added based on evironement by default
+}
+static async void SeedUsers(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var _dbContext = services.GetRequiredService<AppDbContext>();
+
+        var usersInJson = await System.IO.File.ReadAllTextAsync("UserSeeds.json");
+
+        var users = JsonSerializer.Deserialize<List<User>>(usersInJson);
+
+        if (users == null)
+            return;
+
+        foreach (var user in users)
+        {
+            var exist = _dbContext.Users.FirstOrDefault(x => x.Email == user.Email);
+
+            if (exist == null)
+            {
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+        }
+    }
 }

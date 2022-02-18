@@ -9,10 +9,24 @@
 	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-@*use environment tag helper to determine which envrionemnt application currently on*@
-
+<hr />
 <h3>
-	<h2>Map Settings</h2>
+	use environment tag helper to determine which envrionemnt application currently on
+</h3>
+<environment names="Development">
+	Development mode
+</environment>
+<environment names="Production">
+	Production mode
+</environment>
+<environment names="Staging">
+	Staging mode
+</environment>
+
+<hr />
+<h3>Show POCO objects injected by IOptionsSnapShot</h3>
+<h3>
+	<h5>Map Settings</h5>
 	<p>
 		Zoom Level is <span>@Model._mapSettings.DefaultZoomLevel</span>
 	</p>
@@ -24,13 +38,15 @@
 	</p>
 </h3>
 
+<hr />
+<h3>Show Users From Database</h3>
 
-<environment names="Development">
-	Development mode
-</environment>
-<environment names="Production">
-	Production mode
-</environment>
-<environment names="Staging">
-	Staging mode
-</environment>
+@foreach (var user in @Model.Users)
+{
+	<p>FirstName: <span>@user.FirstName</span></p>
+	<p>LastName: <span>@user.LastName</span></p>
+	<p>Email: <span>@user.Email</span></p>
+	<p>PhoneNumber: <span>@user.PhoneNumber</span></p>
+}
+
+
